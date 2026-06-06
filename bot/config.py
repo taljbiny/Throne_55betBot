@@ -1,4 +1,4 @@
-BOT_TOKEN = "PUT_YOUR_BOT_TOKEN"
+BOT_TOKEN = "7871329256:AAHQmIQe_c3eURL3PlgnO6OqiM0p7gOh8gQ"
 
 DB_CONFIG = {
     "host": "localhost",
@@ -9,4 +9,4 @@ DB_CONFIG = {
 
 API_URL = "http://localhost:8000"
 
-ADMIN_IDS = [123456789]  # ضع Telegram ID الخاص فيك
+ADMIN_IDS = [8219716285]  # ضع Telegram ID الخاص فيك
