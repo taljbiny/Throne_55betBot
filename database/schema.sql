@@ -3,8 +3,3 @@ CREATE TABLE users (
     telegram_id BIGINT UNIQUE,
     balance DECIMAL(10,2) DEFAULT 0
 );
-
-CREATE TABLE admins (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    telegram_id BIGINT UNIQUE
-);
