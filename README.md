@@ -1,13 +1,12 @@
-# Telegram Wallet Bot
+# Telegram Bot System
 
-بوت لإدارة:
-- حسابات المستخدمين
-- شحن وسحب رصيد
-- محفظة داخلية
-- API وسيط
+## Features
+- Telegram bot
+- API backend
+- User system
 
-## تشغيل API
+## Run API
 uvicorn api.app:app --host 0.0.0.0 --port 8000
 
-## تشغيل البوت
+## Run Bot
 python -m bot.main
