@@ -18,7 +18,7 @@ def create_user(data: dict):
 
     cur.execute("SELECT * FROM users WHERE telegram_id=%s", (telegram_id,))
     if cur.fetchone():
-        return {"status": "ok", "message": "المستخدم موجود مسبقاً"}
+        return {"status": "ok", "message": "المستخدم موجود"}
 
     cur.execute("INSERT INTO users (telegram_id) VALUES (%s)", (telegram_id,))
     db.commit()
