@@ -5,8 +5,7 @@ from telegram.ext import (
 )
 
 from bot.config import BOT_TOKEN
-from bot.handlers import start, button_handler
-
+from bot.handlers_user import start, button_handler
 
 app = Application.builder().token(BOT_TOKEN).build()
 
