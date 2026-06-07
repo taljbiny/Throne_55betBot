@@ -1,5 +1,10 @@
-import mysql.connector
-from bot.config import DB_CONFIG
-
-def get_db():
-    return mysql.connector.connect(**DB_CONFIG)
+users
+player_accounts
+wallets
+transactions
+deposits
+withdrawals
+account_requests
+payment_methods
+settings
+notifications
