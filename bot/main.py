@@ -1,3 +1,5 @@
+print("BOT STARTING...")
+
 from telegram.ext import (
     Application,
     CommandHandler,
