@@ -15,6 +15,16 @@ db = psycopg2.connect(
 
 cur = db.cursor()
 
+# إنشاء الجدول تلقائياً
+cur.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    telegram_id BIGINT UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+db.commit()
+
 @app.get("/")
 def home():
     return {"status": "online"}
