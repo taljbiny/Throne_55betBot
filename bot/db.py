@@ -111,3 +111,76 @@ def init_db():
     conn.commit()
     cur.close()
     conn.close()
+
+
+def create_user(telegram_id, username, first_name):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO users
+        (telegram_id, username, first_name)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (telegram_id)
+        DO NOTHING
+    """, (telegram_id, username, first_name))
+
+    conn.commit()
+
+    cur.execute("""
+        SELECT id
+        FROM users
+        WHERE telegram_id = %s
+    """, (telegram_id,))
+
+    user = cur.fetchone()
+
+    cur.execute("""
+        INSERT INTO wallets (user_id, balance)
+        VALUES (%s, 0)
+        ON CONFLICT DO NOTHING
+    """, (user["id"],))
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+
+def get_user(telegram_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT *
+        FROM users
+        WHERE telegram_id = %s
+    """, (telegram_id,))
+
+    user = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    return user
+
+
+def get_wallet_balance(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT balance
+        FROM wallets
+        WHERE user_id = %s
+    """, (user_id,))
+
+    result = cur.fetchone()
+
+    cur.close()
+    conn.close()
+
+    if result:
+        return float(result["balance"])
+
+    return 0
