@@ -1,5 +1,8 @@
 print("BOT STARTING...")
 
+import threading
+
+from fastapi import FastAPI
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -10,21 +13,16 @@ from bot.config import BOT_TOKEN
 from bot.db import init_db
 from bot.handlers_user import start, button_handler
 
-# إنشاء الجداول عند تشغيل البوت
+
+# إنشاء الجداول
 init_db()
 
-# إنشاء التطبيق
-app = Application.builder().token(BOT_TOKEN).build()
+# إنشاء تطبيق التلغرام
+telegram_app = Application.builder().token(BOT_TOKEN).build()
 
-# أوامر المستخدم
-app.add_handler(CommandHandler("start", start))
-
-# أزرار Inline
-app.add_handler(CallbackQueryHandler(button_handler))
-
-print("BOT IS RUNNING...")
-
-# تشغيل البوت
-app.run_polling(
-    drop_pending_updates=True
+telegram_app.add_handler(
+    CommandHandler("start", start)
 )
+
+telegram_app.add_handler(
+    CallbackQueryHandler(button
