@@ -1,29 +1,30 @@
 print("BOT STARTING...")
 
-import asyncio
 from telegram.ext import (
     Application,
     CommandHandler,
-    CallbackQueryHandler
+    CallbackQueryHandler,
 )
 
 from bot.config import BOT_TOKEN
+from bot.db import init_db
 from bot.handlers_user import start, button_handler
 
+# إنشاء الجداول عند تشغيل البوت
+init_db()
 
-async def main():
-    app = Application.builder().token(BOT_TOKEN).build()
+# إنشاء التطبيق
+app = Application.builder().token(BOT_TOKEN).build()
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button_handler))
+# أوامر المستخدم
+app.add_handler(CommandHandler("start", start))
 
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling()
+# أزرار Inline
+app.add_handler(CallbackQueryHandler(button_handler))
 
-    while True:
-        await asyncio.sleep(3600)
+print("BOT IS RUNNING...")
 
-
-if __name__ == "__main__":
-    asyncio.run(main())
+# تشغيل البوت
+app.run_polling(
+    drop_pending_updates=True
+)
