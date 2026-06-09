@@ -1,5 +1,6 @@
 print("BOT STARTING...")
 
+import asyncio
 import threading
 import traceback
 
@@ -36,19 +37,25 @@ telegram_app.add_handler(
 def run_bot():
     try:
         print("BOT IS RUNNING...")
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
         telegram_app.run_polling(
             drop_pending_updates=True
         )
+
     except Exception as e:
         print("BOT ERROR:", repr(e))
         traceback.print_exc()
 
 
-# تشغيل البوت في Thread منفصل
-threading.Thread(
+# تشغيل البوت بخيط منفصل
+bot_thread = threading.Thread(
     target=run_bot,
     daemon=True
-).start()
+)
+bot_thread.start()
 
 
 # FastAPI
