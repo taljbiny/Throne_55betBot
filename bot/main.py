@@ -1,6 +1,7 @@
 print("BOT STARTING...")
 
 import threading
+import traceback
 
 from fastapi import FastAPI
 import uvicorn
@@ -14,6 +15,8 @@ from telegram.ext import (
 from bot.config import BOT_TOKEN
 from bot.db import init_db
 from bot.handlers_user import start, button_handler
+
+print("BOT_TOKEN FOUND:", bool(BOT_TOKEN))
 
 # إنشاء الجداول
 init_db()
@@ -31,10 +34,14 @@ telegram_app.add_handler(
 
 
 def run_bot():
-    print("BOT IS RUNNING...")
-    telegram_app.run_polling(
-        drop_pending_updates=True
-    )
+    try:
+        print("BOT IS RUNNING...")
+        telegram_app.run_polling(
+            drop_pending_updates=True
+        )
+    except Exception as e:
+        print("BOT ERROR:", repr(e))
+        traceback.print_exc()
 
 
 # تشغيل البوت في Thread منفصل
@@ -44,7 +51,7 @@ threading.Thread(
 ).start()
 
 
-# FastAPI لإبقاء Render Web Service شغال
+# FastAPI
 app = FastAPI()
 
 
