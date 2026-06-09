@@ -1,8 +1,6 @@
 print("BOT STARTING...")
 
-import asyncio
-import threading
-import traceback
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 import uvicorn
@@ -19,10 +17,8 @@ from bot.handlers_user import start, button_handler
 
 print("BOT_TOKEN FOUND:", bool(BOT_TOKEN))
 
-# إنشاء الجداول
 init_db()
 
-# تطبيق التلغرام
 telegram_app = Application.builder().token(BOT_TOKEN).build()
 
 telegram_app.add_handler(
@@ -34,32 +30,26 @@ telegram_app.add_handler(
 )
 
 
-def run_bot():
-    try:
-        print("BOT IS RUNNING...")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("STARTING TELEGRAM BOT...")
 
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
+    await telegram_app.initialize()
+    await telegram_app.start()
+    await telegram_app.updater.start_polling(
+        drop_pending_updates=True
+    )
 
-        telegram_app.run_polling(
-            drop_pending_updates=True
-        )
+    print("BOT STARTED")
 
-    except Exception as e:
-        print("BOT ERROR:", repr(e))
-        traceback.print_exc()
+    yield
 
-
-# تشغيل البوت بخيط منفصل
-bot_thread = threading.Thread(
-    target=run_bot,
-    daemon=True
-)
-bot_thread.start()
+    await telegram_app.updater.stop()
+    await telegram_app.stop()
+    await telegram_app.shutdown()
 
 
-# FastAPI
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")
