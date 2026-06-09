@@ -15,7 +15,22 @@ def get_connection():
 def init_db():
     conn = get_connection()
     cur = conn.cursor()
+ # إصلاح الجداول القديمة
+try:
+    cur.execute("""
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS username TEXT
+    """)
+except Exception as e:
+    print("username column check:", e)
 
+try:
+    cur.execute("""
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS first_name TEXT
+    """)
+except Exception as e:
+    print("first_name column check:", e)
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
