@@ -23,8 +23,10 @@ def login():
         json=payload
     )
 
-    return r.json()
+    print("STATUS:", r.status_code)
+    print("TEXT:", r.text)
 
+    return r.json()
 
 def get_players():
 
