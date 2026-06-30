@@ -1,5 +1,0 @@
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    telegram_id BIGINT UNIQUE,
-    balance DECIMAL(10,2) DEFAULT 0
-);
