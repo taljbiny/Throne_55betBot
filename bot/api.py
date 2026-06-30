@@ -24,24 +24,17 @@ def login():
     )
 
     print("STATUS:", r.status_code)
-    print("TEXT:", r.text)
+    print("HEADERS:", dict(r.headers))
+    print("BODY:", r.text[:1000])   # أول 1000 حرف فقط
 
-    return r.json()
-
-def get_players():
-
-    payload = {
-        "start": 0,
-        "limit": 10,
-        "filter": {}
-    }
-
-    r = session.post(
-        f"{BASE_URL}/Statistics/getPlayersStatisticsPro",
-        json=payload
-    )
-
-    return r.json()
+    try:
+        return r.json()
+    except Exception:
+        return {
+            "status": False,
+            "error": "NOT_JSON",
+            "body": r.text[:1000]
+        }
 
 
 def create_player(login_name, password):
