@@ -1,11 +1,15 @@
 import requests
 
-from bot.config import BASE_URL
-from bot.config import USERNAME
-from bot.config import PASSWORD
-
+from bot.config import BASE_URL, USERNAME, PASSWORD
 
 session = requests.Session()
+
+session.headers.update({
+    "User-Agent": "Mozilla/5.0",
+    "X-Requested-With": "XMLHttpRequest",
+    "Referer": "https://agents.55bets.net/",
+    "Origin": "https://agents.55bets.net"
+})
 
 
 def login():
