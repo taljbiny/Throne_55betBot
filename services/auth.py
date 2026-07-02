@@ -3,7 +3,6 @@ from services.api import post
 
 
 def login():
-
     payload = {
         "username": USERNAME,
         "password": PASSWORD
@@ -11,13 +10,14 @@ def login():
 
     response = post("User/signIn", payload)
 
+    print("=" * 50)
     print("STATUS:", response.status_code)
+    print("HEADERS:", response.headers.get("content-type"))
     print("TEXT:", response.text)
+    print("=" * 50)
 
     try:
         data = response.json()
-        print("JSON:", data)
         return data.get("status", False)
     except Exception:
-        print("NOT JSON RESPONSE")
         return False
