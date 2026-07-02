@@ -8,16 +8,16 @@ def login():
         "password": PASSWORD
     }
 
-    response = post("User/signIn", payload)
-
-    print("=" * 50)
-    print("STATUS:", response.status_code)
-    print("HEADERS:", response.headers.get("content-type"))
-    print("TEXT:", response.text)
-    print("=" * 50)
-
     try:
-        data = response.json()
-        return data.get("status", False)
-    except Exception:
-        return False
+        response = post("User/signIn", payload)
+
+        return {
+            "status_code": response.status_code,
+            "content_type": response.headers.get("content-type"),
+            "text": response.text[:1000]
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
